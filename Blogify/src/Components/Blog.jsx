@@ -24,6 +24,42 @@ const Blog = () => {
       desc: "Optimized for complex instruction-following and efficient multi-step workflows.",
       img: "https://picsum.photos/600/350?random=3",
     },
+    {
+      id: 3,
+      title: "Build with Gemini 3.1 Pro",
+      desc: "Optimized for complex instruction-following and efficient multi-step workflows.",
+      img: "https://picsum.photos/600/350?random=3",
+    },
+    {
+      id: 3,
+      title: "Build with Gemini 3.1 Pro",
+      desc: "Optimized for complex instruction-following and efficient multi-step workflows.",
+      img: "https://picsum.photos/600/350?random=3",
+    },
+    {
+      id: 3,
+      title: "Build with Gemini 3.1 Pro",
+      desc: "Optimized for complex instruction-following and efficient multi-step workflows.",
+      img: "https://picsum.photos/600/350?random=3",
+    },
+    {
+      id: 3,
+      title: "Build with Gemini 3.1 Pro",
+      desc: "Optimized for complex instruction-following and efficient multi-step workflows.",
+      img: "https://picsum.photos/600/350?random=3",
+    },
+    {
+      id: 3,
+      title: "Build with Gemini 3.1 Pro",
+      desc: "Optimized for complex instruction-following and efficient multi-step workflows.",
+      img: "https://picsum.photos/600/350?random=3",
+    },
+    {
+      id: 3,
+      title: "Build with Gemini 3.1 Pro",
+      desc: "Optimized for complex instruction-following and efficient multi-step workflows.",
+      img: "https://picsum.photos/600/350?random=3",
+    },
   ];
 
   return (
