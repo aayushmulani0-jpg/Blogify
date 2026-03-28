@@ -1,67 +1,93 @@
-import React from "react";
-import { Card, Typography, Button, Row, Col, Flex, Image } from "antd";
+import React, { useEffect, useState } from "react";
+import { Card, Typography, Button, Row, Col, Flex, Image, message } from "antd";
 import { ArrowRightOutlined } from "@ant-design/icons";
+import axios from "axios";
+import axiosInstance from "../Utils/axiosInstance";
 
 const { Title, Paragraph } = Typography;
 
 const Blog = () => {
-  const blogs = [
-    {
-      id: 1,
-      title: "Grow with Google Play Games Level Up",
-      desc: "Optimize your game’s reach, Sidekick testing, and a checklist to secure your benefits.",
-      img: "https://picsum.photos/600/350?random=1",
-    },
-    {
-      id: 2,
-      title: "Nano Banana 2: high fidelity at low latency",
-      desc: "Power the next generation of visual apps with the best price-performance image model from Google.",
-      img: "https://picsum.photos/600/350?random=2",
-    },
-    {
-      id: 3,
-      title: "Build with Gemini 3.1 Pro",
-      desc: "Optimized for complex instruction-following and efficient multi-step workflows.",
-      img: "https://picsum.photos/600/350?random=3",
-    },
-    {
-      id: 3,
-      title: "Build with Gemini 3.1 Pro",
-      desc: "Optimized for complex instruction-following and efficient multi-step workflows.",
-      img: "https://picsum.photos/600/350?random=3",
-    },
-    {
-      id: 3,
-      title: "Build with Gemini 3.1 Pro",
-      desc: "Optimized for complex instruction-following and efficient multi-step workflows.",
-      img: "https://picsum.photos/600/350?random=3",
-    },
-    {
-      id: 3,
-      title: "Build with Gemini 3.1 Pro",
-      desc: "Optimized for complex instruction-following and efficient multi-step workflows.",
-      img: "https://picsum.photos/600/350?random=3",
-    },
-    {
-      id: 3,
-      title: "Build with Gemini 3.1 Pro",
-      desc: "Optimized for complex instruction-following and efficient multi-step workflows.",
-      img: "https://picsum.photos/600/350?random=3",
-    },
-    {
-      id: 3,
-      title: "Build with Gemini 3.1 Pro",
-      desc: "Optimized for complex instruction-following and efficient multi-step workflows.",
-      img: "https://picsum.photos/600/350?random=3",
-    },
-    {
-      id: 3,
-      title: "Build with Gemini 3.1 Pro",
-      desc: "Optimized for complex instruction-following and efficient multi-step workflows.",
-      img: "https://picsum.photos/600/350?random=3",
-    },
-  ];
+  // const blogs = [
+  //   {
+  //     id: 1,
+  //     title: "Grow with Google Play Games Level Up",
+  //     desc: "Optimize your game’s reach, Sidekick testing, and a checklist to secure your benefits.",
+  //     img: "https://picsum.photos/600/350?random=1",
+  //   },
+  //   {
+  //     id: 2,
+  //     title: "Nano Banana 2: high fidelity at low latency",
+  //     desc: "Power the next generation of visual apps with the best price-performance image model from Google.",
+  //     img: "https://picsum.photos/600/350?random=2",
+  //   },
+  //   {
+  //     id: 3,
+  //     title: "Build with Gemini 3.1 Pro",
+  //     desc: "Optimized for complex instruction-following and efficient multi-step workflows.",
+  //     img: "https://picsum.photos/600/350?random=3",
+  //   },
+  //   {
+  //     id: 3,
+  //     title: "Build with Gemini 3.1 Pro",
+  //     desc: "Optimized for complex instruction-following and efficient multi-step workflows.",
+  //     img: "https://picsum.photos/600/350?random=3",
+  //   },
+  //   {
+  //     id: 3,
+  //     title: "Build with Gemini 3.1 Pro",
+  //     desc: "Optimized for complex instruction-following and efficient multi-step workflows.",
+  //     img: "https://picsum.photos/600/350?random=3",
+  //   },
+  //   {
+  //     id: 3,
+  //     title: "Build with Gemini 3.1 Pro",
+  //     desc: "Optimized for complex instruction-following and efficient multi-step workflows.",
+  //     img: "https://picsum.photos/600/350?random=3",
+  //   },
+  //   {
+  //     id: 3,
+  //     title: "Build with Gemini 3.1 Pro",
+  //     desc: "Optimized for complex instruction-following and efficient multi-step workflows.",
+  //     img: "https://picsum.photos/600/350?random=3",
+  //   },
+  //   {
+  //     id: 3,
+  //     title: "Build with Gemini 3.1 Pro",
+  //     desc: "Optimized for complex instruction-following and efficient multi-step workflows.",
+  //     img: "https://picsum.photos/600/350?random=3",
+  //   },
+  //   {
+  //     id: 3,
+  //     title: "Build with Gemini 3.1 Pro",
+  //     desc: "Optimized for complex instruction-following and efficient multi-step workflows.",
+  //     img: "https://picsum.photos/600/350?random=3",
+  //   },
+  // ];
 
+  const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [coverImage, setCoverImage] = useState("https://example.com/gemini.jpg"); 
+
+  const createBlog = async() => {
+    try {
+        const payload = {
+    title: title,
+    content: content,
+    coverImage: coverImage,
+  };
+      const response = await axiosInstance.post("/blogs",payload)
+      setBlogs(response.data.blogs);
+      console.log("Blog created: ", response.data);
+    } catch (error) {
+      message.error("Failed to create blog");
+    }
+  }
+  
+  useEffect(() => {
+    createBlog();
+  }, []);
   return (
     <Flex vertical gap={40} style={{ padding: 40 }}>
       <Title style={{ textAlign: "center", margin: 0 }}>Trending news</Title>
