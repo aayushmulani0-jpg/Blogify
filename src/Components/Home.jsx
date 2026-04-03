@@ -163,3 +163,45 @@ const Home = () => {
 };
 
 export default Home;
+
+
+// import React, { useState } from "react";
+// import { Layout } from "antd";
+
+// import Navbar from "./Navbar";
+// import HeroSection from "./HeroSection";
+// import TrendingSection from "./TrendingSection";
+// import FooterSection from "./FooterSection";
+
+// // const { Content } = Layout;
+
+// // const Home = () => {
+// //   const [isDarkMode, setIsDarkMode] = useState(true);
+
+// //   return (
+// //     <Layout style={{ minHeight: "100vh" ,minWidth:"100vw"}}>
+// //       {/* Navbar */}
+// //       <Navbar isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
+
+// //       {/* Main Content */}
+// //       <Content>
+// //         <HeroSection />
+// //         <TrendingSection />
+// //       </Content>
+
+// //       {/* Footer */}
+// //       <FooterSection />
+// //     </Layout>
+// //   );
+// // };
+
+// // export default Home;
+
+
+
+
+// export const Home = () => {
+//   return (
+//     <div>Home</div>
+//   )
+// }
