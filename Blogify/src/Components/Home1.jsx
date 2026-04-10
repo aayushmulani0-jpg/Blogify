@@ -16,13 +16,11 @@ import {
   ArrowRightOutlined,
   StarFilled,
   CommentOutlined,
-  YoutubeOutlined,
-  InstagramOutlined,
-  LinkedinOutlined,
-  TwitterOutlined,
 } from "@ant-design/icons";
+import Navbar from "./Navbar";
+import Footer from "./Footer";
 
-const { Header, Content, Footer } = Layout;
+const { Content } = Layout;
 const { Title, Paragraph, Text } = Typography;
 const { useBreakpoint } = Grid;
 
@@ -116,54 +114,7 @@ const Home1 = () => {
         overflowX: "hidden",
       }}
     >
-      <Header
-        style={{
-          position: "sticky",
-          top: 0,
-          zIndex: 1000,
-          height: 80,
-          lineHeight: "80px",
-          paddingInline: screens.md ? 32 : 16,
-          background: "rgba(255,255,255,0.82)",
-          backdropFilter: "blur(10px)",
-          borderBottom: "1px solid #e6eaf5",
-        }}
-      >
-        <Row justify="space-between" align="middle" wrap={false}>
-          <Col>
-            <Text style={{ fontSize: 28, fontWeight: 800, color: "#0f172a" }}>
-              Blogify
-            </Text>
-          </Col>
-          {screens.md && (
-            <Col>
-              <Space size={28}>
-                <Text
-                  strong
-                  style={{
-                    color: "#1d4ed8",
-                    borderBottom: "2px solid #1d4ed8",
-                  }}
-                >
-                  Home
-                </Text>
-                <Text style={{ color: "#475569" }}>Blogs</Text>
-                <Text style={{ color: "#475569" }}>Categories</Text>
-                <Text style={{ color: "#475569" }}>About</Text>
-                <Text style={{ color: "#475569" }}>Contact</Text>
-              </Space>
-            </Col>
-          )}
-          <Col>
-            <Space>
-              {screens.md && <Button type="text">Log in</Button>}
-              <Button type="primary" size="large">
-                Get Started
-              </Button>
-            </Space>
-          </Col>
-        </Row>
-      </Header>
+      <Navbar activeKey="home" showAuthButtons />
 
       <Content>
         <section
@@ -490,105 +441,7 @@ const Home1 = () => {
         </section>
       </Content>
 
-      <Footer
-        style={{
-          background: "#020617",
-          color: "#94a3b8",
-          padding: screens.lg ? "72px 48px 32px" : "56px 18px 24px",
-        }}
-      >
-        <div style={{ maxWidth: 1240, margin: "0 auto" }}>
-          <Row gutter={[24, 32]}>
-            <Col xs={24} md={10}>
-              <Space align="center" size={12} style={{ marginBottom: 16 }}>
-                <Avatar
-                  shape="square"
-                  size={42}
-                  style={{
-                    borderRadius: 11,
-                    background:
-                      "linear-gradient(135deg, #2563eb, #4f46e5, #7c3aed)",
-                    fontSize: 20,
-                    fontWeight: 800,
-                  }}
-                >
-                  B
-                </Avatar>
-                <Text
-                  style={{ color: "#ffffff", fontSize: 36, fontWeight: 700 }}
-                >
-                  Blogify
-                </Text>
-              </Space>
-              <Paragraph
-                style={{ color: "#94a3b8", maxWidth: 420, marginBottom: 0 }}
-              >
-                A clean space for writers and thinkers to share meaningful ideas
-                with the world.
-              </Paragraph>
-            </Col>
-            <Col xs={12} md={4}>
-              <Text
-                style={{
-                  color: "#ffffff",
-                  fontWeight: 700,
-                  display: "block",
-                  marginBottom: 14,
-                }}
-              >
-                Platform
-              </Text>
-              <Space direction="vertical" size={8}>
-                <Text style={{ color: "#94a3b8" }}>Browse Blogs</Text>
-                <Text style={{ color: "#94a3b8" }}>Write a Post</Text>
-                <Text style={{ color: "#94a3b8" }}>Categories</Text>
-              </Space>
-            </Col>
-            <Col xs={12} md={4}>
-              <Text
-                style={{
-                  color: "#ffffff",
-                  fontWeight: 700,
-                  display: "block",
-                  marginBottom: 14,
-                }}
-              >
-                Company
-              </Text>
-              <Space direction="vertical" size={8}>
-                <Text style={{ color: "#94a3b8" }}>About Us</Text>
-                <Text style={{ color: "#94a3b8" }}>Contact</Text>
-                <Text style={{ color: "#94a3b8" }}>Blogify for Teams</Text>
-              </Space>
-            </Col>
-            <Col xs={24} md={6}>
-              <Text
-                style={{
-                  color: "#ffffff",
-                  fontWeight: 700,
-                  display: "block",
-                  marginBottom: 14,
-                }}
-              >
-                Follow Us
-              </Text>
-              <Space size={20}>
-                <YoutubeOutlined style={{ fontSize: 24, color: "#e2e8f0" }} />
-                <InstagramOutlined style={{ fontSize: 24, color: "#e2e8f0" }} />
-                <LinkedinOutlined style={{ fontSize: 24, color: "#e2e8f0" }} />
-                <TwitterOutlined style={{ fontSize: 24, color: "#e2e8f0" }} />
-              </Space>
-            </Col>
-          </Row>
-
-          <Divider style={{ borderColor: "#334155", margin: "34px 0 18px" }} />
-          <Text
-            style={{ color: "#94a3b8", display: "block", textAlign: "center" }}
-          >
-            {`© ${new Date().getFullYear()} Blogify • by Parthkoshti. All rights reserved.`}
-          </Text>
-        </div>
-      </Footer>
+      <Footer />
     </Layout>
   );
 };

@@ -7,7 +7,6 @@ import {
   ConfigProvider,
   Divider,
   Flex,
-  Input,
   Layout,
   Pagination,
   Row,
@@ -15,16 +14,11 @@ import {
   Tag,
   Typography,
 } from "antd";
-import {
-  ArrowLeftOutlined,
-  ArrowRightOutlined,
-  SearchOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
+import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
+import Navbar from "./Navbar";
+import Footer from "./Footer";
 
-const { Header, Footer, Content } = Layout;
-
-const navLinks = ["Home", "Blogs", "Categories", "About", "Contact"];
+const { Content } = Layout;
 const filters = ["All Posts", "Design", "Technology", "Business", "Culture"];
 
 const posts = [
@@ -101,15 +95,15 @@ const posts = [
       "https://lh3.googleusercontent.com/aida-public/AB6AXuBxvc2OVkkw0z5zOLjdo8tVADlijlPR7FJ3wehqeZ0eq-8EHsu_gHhE1vTWLWVvuVwR7F1I5GrVdtaR7PI6VdP1vbt7CCiS0hlS-JYpfWZT04INoZRVkDaeHCWlpd6KHcG5IxZGdLZfmz7Zowxl4RbBDdAWl-7qtYVBNtNu-nOgYKBgbt1MD43WddeXaeSClX8RCIoTwRMInrm1CRuEMajK7-Iw0s_XMb8bCs1UayKhooGEzlrzywUGBXRAs73oF1aIs9WHMCwdmQOV",
   },
 ];
- 
+
 const Blog1 = () => {
   return (
     <ConfigProvider
       theme={{
         token: {
           colorPrimary: "#0058be",
-          colorInfo: "#0058be",
-          borderRadius: 16,
+          // colorInfo: "#0058be",
+          // borderRadius: 16,
           fontFamily:
             'Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
         },
@@ -118,78 +112,7 @@ const Blog1 = () => {
       <div
         style={{ minHeight: "100vh", background: "#faf8ff", color: "#131b2e" }}
       >
-        <Header
-          style={{
-            position: "sticky",
-            top: 0,
-            zIndex: 10,
-            padding: "0 24px",
-            height: 76,
-            lineHeight: "76px",
-            backdropFilter: "blur(18px)",
-            background: "rgba(250, 248, 255, 0.86)",
-            borderBottom: "1px solid rgba(118,119,125,0.12)",
-            boxShadow: "0 1px 0 rgba(15,23,42,0.02)",
-          }}
-        >
-          <Flex
-            align="center"
-            justify="space-between"
-            style={{ maxWidth: 1240, margin: "0 auto", gap: 16 }}
-          >
-            <Typography.Title
-              level={3}
-              style={{
-                margin: 0,
-                color: "#131b2e",
-                fontSize: 18,
-                fontWeight: 700,
-              }}
-            >
-              Blogify
-            </Typography.Title>
-
-            <Space size={26} wrap>
-              {navLinks.map((item) => (
-                <Typography.Text
-                  key={item}
-                  style={{
-                    color: item === "Blogs" ? "#0058be" : "#4b5563",
-                    fontWeight: item === "Blogs" ? 700 : 500,
-                    borderBottom:
-                      item === "Blogs"
-                        ? "2px solid #0058be"
-                        : "2px solid transparent",
-                    paddingBottom: 2,
-                    cursor: "pointer",
-                  }}
-                >
-                  {item}
-                </Typography.Text>
-              ))}
-            </Space>
-
-            <Space size={12}>
-              <Input
-                allowClear
-                prefix={<SearchOutlined style={{ color: "#94a3b8" }} />}
-                placeholder="Search articles..."
-                style={{
-                  width: 210,
-                  borderRadius: 999,
-                  background: "#e8ebff",
-                  border: "1px solid rgba(118,119,125,0.10)",
-                }}
-              />
-              <Button
-                type="text"
-                shape="circle"
-                icon={<UserOutlined />}
-                style={{ color: "#0058be" }}
-              />
-            </Space>
-          </Flex>
-        </Header>
+        <Navbar activeKey="blogs" showSearchBar />
 
         <Content>
           <div
@@ -403,51 +326,7 @@ const Blog1 = () => {
           </div>
         </Content>
 
-        <Footer
-          style={{
-            marginTop: 40,
-            background: "#0f172a",
-            color: "#cbd5e1",
-            padding: "48px 24px 34px",
-          }}
-        >
-          <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-            <Row gutter={[24, 24]} align="middle" justify="space-between">
-              <Col xs={24} md={10}>
-                <Typography.Title
-                  level={4}
-                  style={{ color: "#fff", marginTop: 0 }}
-                >
-                  Blogify
-                </Typography.Title>
-                <Typography.Paragraph
-                  style={{ color: "#94a3b8", maxWidth: 340, marginBottom: 0 }}
-                >
-                  Curating the finest digital experiences and design insights
-                  since 2024.
-                </Typography.Paragraph>
-              </Col>
-              <Col xs={24} md={14}>
-                <Flex justify="space-between" align="center" gap={16} wrap>
-                  <Space size={20} wrap>
-                    <Typography.Text style={{ color: "#cbd5e1" }}>
-                      Privacy Policy
-                    </Typography.Text>
-                    <Typography.Text style={{ color: "#cbd5e1" }}>
-                      Terms of Service
-                    </Typography.Text>
-                    <Typography.Text style={{ color: "#cbd5e1" }}>
-                      RSS Feed
-                    </Typography.Text>
-                  </Space>
-                  <Typography.Text style={{ color: "#94a3b8" }}>
-                    © 2024 Blogify • by Parthkoshti. All rights reserved.
-                  </Typography.Text>
-                </Flex>
-              </Col>
-            </Row>
-          </div>
-        </Footer>
+        <Footer description="Curating the finest digital experiences and design insights since 2024." />
       </div>
     </ConfigProvider>
   );
