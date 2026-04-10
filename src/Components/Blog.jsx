@@ -161,7 +161,7 @@ const Blog = () => {
               style={{ height: 420, borderRadius: 12 }}
               cover={
                 <Image
-                  src={`http://localhost:8003/${blog.coverImage}`}
+                  src={`${blog.coverImage}`}
                   preview={false}
                   style={{ height: 220, objectFit: "cover" }}
                 />

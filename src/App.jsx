@@ -11,6 +11,7 @@ import Home from "./Components/Home";
 import Login from "./Components/Login";
 import Signup from "./Components/SignUp";
 import { useSelector } from "react-redux";
+import Explore from "./Components/Explore";
 
 function App() {
   const isAuthenticated = useSelector((state) => !!state.user.token);
@@ -21,6 +22,7 @@ function App() {
       <Route path="/home" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
+      <Route path="/explore" element={<Explore />} />
       <Route
         path="/*"
         element={
@@ -32,6 +34,7 @@ function App() {
         <Route path="contact" element={<Contact />} />
         <Route path="blog" element={<Blog />} />
         <Route path="*" element={<NotFound />} />
+
       </Route>
     </Routes>
   );
