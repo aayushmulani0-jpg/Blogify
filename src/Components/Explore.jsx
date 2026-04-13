@@ -1,6 +1,6 @@
 
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Avatar,
   Button,
@@ -19,86 +19,132 @@ import {
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import axiosInstance from "../utils/axiosInstance";
 
 const { Content } = Layout;
 const filters = ["All Posts", "Design", "Technology", "Business", "Culture"];
 
-const posts = [
-  {
-    category: "Technology",
-    title: "The Future of Generative AI in Creative Workflows",
-    description:
-      "How artificial intelligence is reshaping the way designers and developers collaborate on complex digital products.",
-    author: "Julian Wright",
-    initials: "JW",
-    accent: "#6366f1",
-    readTime: "8 min read",
-    image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuCk5E5BNWJ00BKK_bX7mhOscQlaxRD9JVa2TN2nddQKE3YuW_PcmI6pAtVD4g3vqByjp7WLAVziORg_uqSzEAaNvnyyLlMQx2kQlmhpODT7CuSDvzcWAYSN8h7cn1VJNDO4dmlvOJhoq1qzIRvQdy3XawBGAVoIJQ8y8-WbjanWSbWq2sDrQxHJ-5i4_3t89xRAgrlUnM6Zenbgy85_3u_OqAD4_DvSMLWt7EGctx6ii8EW5txkqzE1ybMt5xZOH0jD7tIPBOm_Yamv",
-  },
-  {
-    category: "Design",
-    title: "The Resurgence of Skeuomorphism in Web Apps",
-    description:
-      "Why digital interfaces are slowly returning to tactile, realistic textures and spatial depth after a decade of flat design.",
-    author: "Priya Sharma",
-    initials: "PS",
-    accent: "#14b8a6",
-    readTime: "12 min read",
-    image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuD3vwlkm_OYmEzfN2GzJe_-8UihQJeX4HHv9MMHaxktj6i3TpY6JM1SFMO5kie6Lg_HbpJNi3Xp7AbfTjkSC7izAneqETeVjq6y4-mT92JkFCLDpKNkrpIJSSgZq3sgQG0-7GKnnuZbqEgXcQUg1qTh_nY7qabCZ0gDXeBCqcYZn2b1wsd8ShQOZyau6bD9ZzhnIlSRTdIWWBgvtYYJL2clSTiW3JqXIvMkryNHBtfpSIg97IyVvmAaFmOq-NrTuE6W3-FvIU7f1Oq-",
-  },
-  {
-    category: "Culture",
-    title: "Remote First: Building Culture in Distributed Teams",
-    description:
-      "Exploring the psychological frameworks that keep modern teams connected and motivated across different timezones.",
-    author: "Marcus Chen",
-    initials: "MC",
-    accent: "#f59e0b",
-    readTime: "6 min read",
-    image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuA6kdiSA1t2zb1T2mjx40vz3Ws-NhwX9sL4y3RhKkK3-d9P84JXHson0bq2IePfAUjH3vYEwP1bbX3qLrMZx8ycoi_oSCLZLLzLo2sZSjo16UZjQk8u5TSxiJTFUQurMhQlVkbmNl9uV__wjedWbrEzRKUUojJGyby2iNmN8z0OeQOlj0J_vvoFGapPxw9M6aGDZT0T4fuzY4_EhcXigDdi0zvg5cV2C0RIT4mXkSQTkTTxwIAd8Cod_2GDA4CjImCN-O5n3LHXqV8o",
-  },
-  {
-    category: "Business",
-    title: "Data-Driven Storytelling for Digital Brands",
-    description:
-      "Leveraging analytics not just for conversion, but to craft compelling narratives that resonate with human audiences.",
-    author: "Sarah Lee",
-    initials: "SL",
-    accent: "#e11d48",
-    readTime: "15 min read",
-    image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuA28PsHiu3POhe35a5ga4YEUY06d6Izt_i15Oh37vX0ijytab_y1aH1voUrlMqiG5xAzQ0K_kFobnl766vAOVW-CPtY4kVlsPDqXql4XShkmLSZVsdxpifNt--IYrESNp_bdoz5VYdn8vgnpOGmhHrYGJjNriixopVs5n_X0o5eXvRaIPWoWRiS0YBZwbrcfrZVVzukGYa647hPoa2kGSbRDJgjmOYSuVv513vz3R9HaKLKuzmL-SolfpNP1XAM8JTC52hTQUok23xn",
-  },
-  {
-    category: "Technology",
-    title: "The New Era of Front-end Architecture",
-    description:
-      "How server-side components and edge computing are changing the performance landscape of the modern web.",
-    author: "Daniel Rivera",
-    initials: "DR",
-    accent: "#3b82f6",
-    readTime: "10 min read",
-    image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuCZTsPGch1Y5IegVUn0VM4kKaL1Skp0UxCX0ctmsuMEKger1XzTRj5vjjKH9NVt-XC3tzRx9AH49kEEHgYzpEjJ3DMaeBebsMdJyLb7VSMM7j_40HXP4PuWfC_ZQin_cxaqTdwMapOozALBaKP3sRMfB_j70wHE35wt1tNSiHrWeFu6RiXcM17Y1o7dvU3_Yt-aStJgkiLEAii2u4zmghsgn8wVe3adB5w6HurvDU9naqz5G8-0TBgkItre7B4xLJMQqMfMVXyF3__B",
-  },
-  {
-    category: "Culture",
-    title: "The Psychology of Modern Minimalism",
-    description:
-      "Why we are collectively moving towards simpler lifestyles and how that aesthetic translates into our digital worlds.",
-    author: "Sienna Williams",
-    initials: "SW",
-    accent: "#8b5cf6",
-    readTime: "7 min read",
-    image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuBxvc2OVkkw0z5zOLjdo8tVADlijlPR7FJ3wehqeZ0eq-8EHsu_gHhE1vTWLWVvuVwR7F1I5GrVdtaR7PI6VdP1vbt7CCiS0hlS-JYpfWZT04INoZRVkDaeHCWlpd6KHcG5IxZGdLZfmz7Zowxl4RbBDdAWl-7qtYVBNtNu-nOgYKBgbt1MD43WddeXaeSClX8RCIoTwRMInrm1CRuEMajK7-Iw0s_XMb8bCs1UayKhooGEzlrzywUGBXRAs73oF1aIs9WHMCwdmQOV",
-  },
-];
+// const posts = [
+//   {
+//     category: "Technology",
+//     title: "The Future of Generative AI in Creative Workflows",
+//     description:
+//       "How artificial intelligence is reshaping the way designers and developers collaborate on complex digital products.",
+//     author: "Julian Wright",
+//     initials: "JW",
+//     accent: "#6366f1",
+//     readTime: "8 min read",
+//     image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCk5E5BNWJ00BKK_bX7mhOscQlaxRD9JVa2TN2nddQKE3YuW_PcmI6pAtVD4g3vqByjp7WLAVziORg_uqSzEAaNvnyyLlMQx2kQlmhpODT7CuSDvzcWAYSN8h7cn1VJNDO4dmlvOJhoq1qzIRvQdy3XawBGAVoIJQ8y8-WbjanWSbWq2sDrQxHJ-5i4_3t89xRAgrlUnM6Zenbgy85_3u_OqAD4_DvSMLWt7EGctx6ii8EW5txkqzE1ybMt5xZOH0jD7tIPBOm_Yamv",
+//   },
+//   {
+//     category: "Design",
+//     title: "The Resurgence of Skeuomorphism in Web Apps",
+//     description:
+//       "Why digital interfaces are slowly returning to tactile, realistic textures and spatial depth after a decade of flat design.",
+//     author: "Priya Sharma",
+//     initials: "PS",
+//     accent: "#14b8a6",
+//     readTime: "12 min read",
+//     image:
+//       "https://lh3.googleusercontent.com/aida-public/AB6AXuD3vwlkm_OYmEzfN2GzJe_-8UihQJeX4HHv9MMHaxktj6i3TpY6JM1SFMO5kie6Lg_HbpJNi3Xp7AbfTjkSC7izAneqETeVjq6y4-mT92JkFCLDpKNkrpIJSSgZq3sgQG0-7GKnnuZbqEgXcQUg1qTh_nY7qabCZ0gDXeBCqcYZn2b1wsd8ShQOZyau6bD9ZzhnIlSRTdIWWBgvtYYJL2clSTiW3JqXIvMkryNHBtfpSIg97IyVvmAaFmOq-NrTuE6W3-FvIU7f1Oq-",
+//   },
+//   {
+//     category: "Culture",
+//     title: "Remote First: Building Culture in Distributed Teams",
+//     description:
+//       "Exploring the psychological frameworks that keep modern teams connected and motivated across different timezones.",
+//     author: "Marcus Chen",
+//     initials: "MC",
+//     accent: "#f59e0b",
+//     readTime: "6 min read",
+//     image:
+//       "https://lh3.googleusercontent.com/aida-public/AB6AXuA6kdiSA1t2zb1T2mjx40vz3Ws-NhwX9sL4y3RhKkK3-d9P84JXHson0bq2IePfAUjH3vYEwP1bbX3qLrMZx8ycoi_oSCLZLLzLo2sZSjo16UZjQk8u5TSxiJTFUQurMhQlVkbmNl9uV__wjedWbrEzRKUUojJGyby2iNmN8z0OeQOlj0J_vvoFGapPxw9M6aGDZT0T4fuzY4_EhcXigDdi0zvg5cV2C0RIT4mXkSQTkTTxwIAd8Cod_2GDA4CjImCN-O5n3LHXqV8o",
+//   },
+//   {
+//     category: "Business",
+//     title: "Data-Driven Storytelling for Digital Brands",
+//     description:
+//       "Leveraging analytics not just for conversion, but to craft compelling narratives that resonate with human audiences.",
+//     author: "Sarah Lee",
+//     initials: "SL",
+//     accent: "#e11d48",
+//     readTime: "15 min read",
+//     image:
+//       "https://lh3.googleusercontent.com/aida-public/AB6AXuA28PsHiu3POhe35a5ga4YEUY06d6Izt_i15Oh37vX0ijytab_y1aH1voUrlMqiG5xAzQ0K_kFobnl766vAOVW-CPtY4kVlsPDqXql4XShkmLSZVsdxpifNt--IYrESNp_bdoz5VYdn8vgnpOGmhHrYGJjNriixopVs5n_X0o5eXvRaIPWoWRiS0YBZwbrcfrZVVzukGYa647hPoa2kGSbRDJgjmOYSuVv513vz3R9HaKLKuzmL-SolfpNP1XAM8JTC52hTQUok23xn",
+//   },
+//   {
+//     category: "Technology",
+//     title: "The New Era of Front-end Architecture",
+//     description:
+//       "How server-side components and edge computing are changing the performance landscape of the modern web.",
+//     author: "Daniel Rivera",
+//     initials: "DR",
+//     accent: "#3b82f6",
+//     readTime: "10 min read",
+//     image:
+//       "https://lh3.googleusercontent.com/aida-public/AB6AXuCZTsPGch1Y5IegVUn0VM4kKaL1Skp0UxCX0ctmsuMEKger1XzTRj5vjjKH9NVt-XC3tzRx9AH49kEEHgYzpEjJ3DMaeBebsMdJyLb7VSMM7j_40HXP4PuWfC_ZQin_cxaqTdwMapOozALBaKP3sRMfB_j70wHE35wt1tNSiHrWeFu6RiXcM17Y1o7dvU3_Yt-aStJgkiLEAii2u4zmghsgn8wVe3adB5w6HurvDU9naqz5G8-0TBgkItre7B4xLJMQqMfMVXyF3__B",
+//   },
+//   {
+//     category: "Culture",
+//     title: "The Psychology of Modern Minimalism",
+//     description:
+//       "Why we are collectively moving towards simpler lifestyles and how that aesthetic translates into our digital worlds.",
+//     author: "Sienna Williams",
+//     initials: "SW",
+//     accent: "#8b5cf6",
+//     readTime: "7 min read",
+//     image:
+//       "https://lh3.googleusercontent.com/aida-public/AB6AXuBxvc2OVkkw0z5zOLjdo8tVADlijlPR7FJ3wehqeZ0eq-8EHsu_gHhE1vTWLWVvuVwR7F1I5GrVdtaR7PI6VdP1vbt7CCiS0hlS-JYpfWZT04INoZRVkDaeHCWlpd6KHcG5IxZGdLZfmz7Zowxl4RbBDdAWl-7qtYVBNtNu-nOgYKBgbt1MD43WddeXaeSClX8RCIoTwRMInrm1CRuEMajK7-Iw0s_XMb8bCs1UayKhooGEzlrzywUGBXRAs73oF1aIs9WHMCwdmQOV",
+//   }, {
+//     category: "Technology",
+//     title: "The Future of Generative AI in Creative Workflows",
+//     description:
+//       "How artificial intelligence is reshaping the way designers and developers collaborate on complex digital products.",
+//     author: "Julian Wright",
+//     initials: "JW",
+//     accent: "#6366f1",
+//     readTime: "8 min read",
+//     image:
+//       "https://lh3.googleusercontent.com/aida-public/AB6AXuCk5E5BNWJ00BKK_bX7mhOscQlaxRD9JVa2TN2nddQKE3YuW_PcmI6pAtVD4g3vqByjp7WLAVziORg_uqSzEAaNvnyyLlMQx2kQlmhpODT7CuSDvzcWAYSN8h7cn1VJNDO4dmlvOJhoq1qzIRvQdy3XawBGAVoIJQ8y8-WbjanWSbWq2sDrQxHJ-5i4_3t89xRAgrlUnM6Zenbgy85_3u_OqAD4_DvSMLWt7EGctx6ii8EW5txkqzE1ybMt5xZOH0jD7tIPBOm_Yamv",
+//   }, {
+//     category: "Technology",
+//     title: "The Future of Generative AI in Creative Workflows",
+//     description:
+//       "How artificial intelligence is reshaping the way designers and developers collaborate on complex digital products.",
+//     author: "Julian Wright",
+//     initials: "JW",
+//     accent: "#6366f1",
+//     readTime: "8 min read",
+//     image:
+//       "https://lh3.googleusercontent.com/aida-public/AB6AXuCk5E5BNWJ00BKK_bX7mhOscQlaxRD9JVa2TN2nddQKE3YuW_PcmI6pAtVD4g3vqByjp7WLAVziORg_uqSzEAaNvnyyLlMQx2kQlmhpODT7CuSDvzcWAYSN8h7cn1VJNDO4dmlvOJhoq1qzIRvQdy3XawBGAVoIJQ8y8-WbjanWSbWq2sDrQxHJ-5i4_3t89xRAgrlUnM6Zenbgy85_3u_OqAD4_DvSMLWt7EGctx6ii8EW5txkqzE1ybMt5xZOH0jD7tIPBOm_Yamv",
+//   },
+// ];
 
 const Explore = () => {
+  const [blogs, setBlogs] = useState([]);
+  console.log("Blogs state updated:", blogs);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [total, setTotal] = useState(0);
+  const exploreBlogs = async () => {
+    const payload = {
+      limit: pageSize,
+      page: page,
+    }
+    try {
+      const res = await axiosInstance.post("/getAllUsersBlog", payload);
+      console.log("Blogs fetched successfully:", res.data);
+      setBlogs(res.data.data);
+      setTotal(res.data.total);
+    } catch (error) {
+      console.error("Error fetching blogs:", error);
+    }
+  }
+
+  useEffect(() => {
+    exploreBlogs();
+  }, [page, pageSize])
+
   return (
     <ConfigProvider
       theme={{
@@ -190,8 +236,8 @@ const Explore = () => {
             </Row>
 
             <Row gutter={[24, 28]} style={{ marginTop: 28 }}>
-              {posts.map((post) => (
-                <Col xs={24} sm={12} lg={8} key={post.title}>
+              {blogs?.map((blog) => (
+                <Col xs={24} sm={12} lg={8} key={blog.title}>
                   <Card
                     hoverable
                     styles={{ body: { padding: 0 } }}
@@ -211,15 +257,15 @@ const Explore = () => {
                         }}
                       >
                         <img
-                          alt={post.title}
-                          src={post.image}
+                          alt={blog?.title}
+                          src={blog?.coverImage}
                           style={{
                             width: "100%",
                             height: "100%",
                             objectFit: "cover",
                           }}
                         />
-                        <Tag
+                        {/* <Tag
                           style={{
                             position: "absolute",
                             left: 16,
@@ -233,8 +279,8 @@ const Explore = () => {
                             border: "1px solid rgba(255,255,255,0.3)",
                           }}
                         >
-                          {post.category}
-                        </Tag>
+                          {blog?.category}
+                        </Tag> */}
                       </div>
                     }
                   >
@@ -255,7 +301,7 @@ const Explore = () => {
                           fontSize: 18,
                         }}
                       >
-                        {post.title}
+                        {blog?.title}
                       </Typography.Title>
 
                       <Typography.Paragraph
@@ -267,26 +313,34 @@ const Explore = () => {
                           fontSize: 14,
                         }}
                       >
-                        {post.description}
+                        {blog?.content}
                       </Typography.Paragraph>
 
-                      <Divider style={{ margin: "8px 0 0" }} />
+                      {/* <Divider style={{ margin: "8px 0 0" }} /> */}
 
                       <Flex align="center" justify="space-between" gap={12}>
                         <Space size={12} align="center">
-                          <Avatar
-                            style={{ background: post.accent, fontWeight: 700 }}
+                          {/* <Avatar
+                            style={{ background: blog.accent, fontWeight: 700 }}
                             size={34}
                           >
-                            {post.initials}
-                          </Avatar>
+                            {blog?.initials}
+                          </Avatar> */}
+                          <Flex wrap gap={6}>
+                            {blog?.hashTag?.map((tag, index) => (
+                              <Tag color="blue" key={index}>
+                                #{tag}
+                              </Tag>
+                            ))}
+                          </Flex>
                           <Typography.Text style={{ color: "#475569" }}>
-                            {post.author}
+                            {blog?.author}
                           </Typography.Text>
                         </Space>
-                        <Typography.Text style={{ color: "#64748b" }}>
-                          {post.readTime}
-                        </Typography.Text>
+
+                        {/* <Typography.Text style={{ color: "#64748b" }}>
+                          {blog?.readTime}
+                        </Typography.Text> */}
                       </Flex>
                     </div>
                   </Card>
@@ -295,28 +349,25 @@ const Explore = () => {
             </Row>
 
             <Flex justify="center" style={{ marginTop: 48 }}>
+
               <Pagination
-                defaultCurrent={1}
-                total={72}
-                pageSize={6}
+                current={page}
+                total={total}
+                pageSize={pageSize}
                 showSizeChanger={false}
+                onChange={(newPage, newPageSize) => {
+                  setPage(newPage);
+                  setPageSize(newPageSize);
+                }}
                 itemRender={(page, type, originalElement) => {
                   if (type === "prev") {
                     return (
-                      <Button
-                        shape="circle"
-                        icon={<ArrowLeftOutlined />}
-                        style={{ width: 34, height: 34 }}
-                      />
+                      <Button shape="circle" icon={<ArrowLeftOutlined />} />
                     );
                   }
                   if (type === "next") {
                     return (
-                      <Button
-                        shape="circle"
-                        icon={<ArrowRightOutlined />}
-                        style={{ width: 34, height: 34 }}
-                      />
+                      <Button shape="circle" icon={<ArrowRightOutlined />} />
                     );
                   }
                   return originalElement;
