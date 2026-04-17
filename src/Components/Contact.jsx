@@ -9,6 +9,7 @@ import {
   Button,
   Space,
   Divider,
+  message,
 } from "antd";
 import {
   MailOutlined,
@@ -16,6 +17,7 @@ import {
   EnvironmentOutlined,
   SendOutlined,
 } from "@ant-design/icons";
+import axiosInstance from "../Utils/axiosInstance";
 
 const { Title, Text } = Typography;
 const { TextArea } = Input;
@@ -23,10 +25,17 @@ const { TextArea } = Input;
 const Contact = () => {
   const [form] = Form.useForm();
 
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     console.log("Contact Form Data:", values);
-  };
-
+    try {
+      await axiosInstance.post("/contact", values);
+      message.success("Message sent successfully!");
+      form.resetFields();
+    } catch (error) {
+      message.error("Failed to send message. Please try again later.");
+    }
+  }
+  
   return (
     <div style={{ padding: "40px 24px", maxWidth: 1200, margin: "auto" }}>
       <Row gutter={[32, 32]}>
@@ -111,14 +120,6 @@ const Contact = () => {
                   </Form.Item>
                 </Col>
               </Row>
-
-              <Form.Item
-                label="Subject"
-                name="subject"
-                rules={[{ required: true, message: "Please enter subject" }]}
-              >
-                <Input placeholder="Subject" />
-              </Form.Item>
 
               <Form.Item
                 label="Message"
