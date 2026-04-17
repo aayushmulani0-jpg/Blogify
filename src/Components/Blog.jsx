@@ -1,5 +1,3 @@
-
-
 import React, { useEffect, useState, useCallback } from "react";
 import {
   Card,
@@ -15,13 +13,22 @@ import {
   Upload,
   Tag,
   Select,
+  Divider,
 } from "antd";
-import { ArrowRightOutlined, UploadOutlined } from "@ant-design/icons";
+import {
+  ArrowRightOutlined,
+  EditOutlined,
+  DeleteOutlined,
+  PlusOutlined,
+  UploadOutlined,
+} from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 import axiosInstance from "../Utils/axiosInstance";
 
 const { Title, Paragraph } = Typography;
 
 const Blog = () => {
+  const navigate = useNavigate();
   const [blogs, setBlogs] = useState([]);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -32,6 +39,13 @@ const Blog = () => {
   const [hashTag, setHashTag] = useState([]);
 
   const BASE_URL = "http://localhost:8003/"; // 🔁 change if needed
+
+  const getBlogImage = (blog) => {
+    if (!blog?.coverImage) return "";
+    return blog.coverImage.startsWith("http")
+      ? blog.coverImage
+      : BASE_URL + blog.coverImage;
+  };
 
   // ✅ Fetch blogs
   const allBlogs = useCallback(async () => {
@@ -109,13 +123,9 @@ const Blog = () => {
     }
 
     try {
-      await axiosInstance.patch(
-        `/blogs/${editingBlogId}`,
-        buildFormData(),
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
+      await axiosInstance.patch(`/blogs/${editingBlogId}`, buildFormData(), {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
       message.success("Blog updated");
       resetForm();
@@ -182,49 +192,70 @@ const Blog = () => {
     setImagePreview(
       blog.coverImage?.startsWith("http")
         ? blog.coverImage
-        : BASE_URL + blog.coverImage
+        : BASE_URL + blog.coverImage,
     );
 
     setIsModalOpen(true);
   };
 
   return (
-    <Flex vertical gap={40} style={{ padding: 40 }}>
-      <Title style={{ textAlign: "center", margin: 0 }}>
-        Trending News
-      </Title>
+    <Flex
+      vertical
+      gap={28}
+      style={{
+        padding: "28px 24px 36px",
+        maxWidth: 1280,
+        margin: "0 auto",
+      }}
+    >
+      <Card
+        bordered={false}
+        style={{ borderRadius: 18, background: "#f8fafc" }}
+        styles={{ body: { padding: "22px 24px" } }}
+      >
+        <Flex align="center" justify="space-between" wrap gap={16}>
+          <Flex vertical gap={6}>
+            <Title level={2} style={{ margin: 0 }}>
+              Blog Studio
+            </Title>
+            <Typography.Text type="secondary">
+              Create, edit, and manage your stories in one place.
+            </Typography.Text>
+          </Flex>
 
-      <Row justify="center">
-        <Button type="primary" onClick={() => setIsModalOpen(true)}>
-          Create Blog
-        </Button>
-      </Row>
+          <Button
+            type="primary"
+            size="large"
+            icon={<PlusOutlined />}
+            onClick={() => setIsModalOpen(true)}
+            style={{ background: "#4f46e5", borderColor: "#4f46e5" }}
+          >
+            Create Blog
+          </Button>
+        </Flex>
+      </Card>
 
-      {/* ✅ Blog Cards */}
-      <Row gutter={[24, 24]} justify="center">
+      <Row gutter={[20, 20]}>
         {blogs.map((blog) => (
           <Col xs={24} sm={12} md={12} lg={8} xl={8} key={blog._id}>
             <Card
               hoverable
-              style={{ height: 420, borderRadius: 12 }}
+              style={{ borderRadius: 16, height: "100%" }}
+              styles={{ body: { padding: 16 } }}
               cover={
                 <Image
-                  src={
-                    blog.coverImage?.startsWith("http")
-                      ? blog.coverImage
-                      : BASE_URL + blog.coverImage
-                  }
+                  src={getBlogImage(blog)}
                   preview={false}
-                  style={{ height: 220, objectFit: "cover" }}
+                  style={{ height: 210, objectFit: "cover" }}
                 />
               }
             >
-              <Flex vertical gap={12}>
-                <Title level={3} style={{ margin: 0 }}>
+              <Flex vertical gap={12} style={{ height: "100%" }}>
+                <Title level={4} style={{ margin: 0 }}>
                   {blog.title}
                 </Title>
 
-                <Paragraph ellipsis={{ rows: 3 }}>
+                <Paragraph ellipsis={{ rows: 3 }} style={{ marginBottom: 0 }}>
                   {blog.content}
                 </Paragraph>
 
@@ -236,15 +267,35 @@ const Blog = () => {
                   ))}
                 </Flex>
 
-                <Button type="primary">
-                  Learn more <ArrowRightOutlined />
-                </Button>
+                <Divider style={{ margin: "2px 0 0" }} />
 
-                <Button onClick={() => handleEdit(blog)}>Edit</Button>
+                <Flex wrap gap={10}>
+                  <Button
+                    type="primary"
+                    icon={<ArrowRightOutlined />}
+                    style={{ background: "#4f46e5", borderColor: "#4f46e5" }}
+                    onClick={() =>
+                      navigate(`/explore/${blog._id}`, { state: { blog } })
+                    }
+                  >
+                    Open
+                  </Button>
 
-                <Button danger onClick={() => deleteBlog(blog._id)}>
-                  Delete
-                </Button>
+                  <Button
+                    icon={<EditOutlined />}
+                    onClick={() => handleEdit(blog)}
+                  >
+                    Edit
+                  </Button>
+
+                  <Button
+                    danger
+                    icon={<DeleteOutlined />}
+                    onClick={() => deleteBlog(blog._id)}
+                  >
+                    Delete
+                  </Button>
+                </Flex>
               </Flex>
             </Card>
           </Col>
@@ -292,16 +343,25 @@ const Blog = () => {
             maxCount={1}
             showUploadList={false}
           >
-            <Button icon={<UploadOutlined />}>
-              Upload Cover Image
-            </Button>
+            <Button icon={<UploadOutlined />}>Upload Cover Image</Button>
           </Upload>
 
           {imagePreview && (
             <Image
               src={imagePreview}
               alt="preview"
-              style={{ width: "100%", borderRadius: 8 }}
+              style={
+                editingBlogId
+                  ? {
+                      width: 400,
+                      height: 400,
+                      objectFit: "cover",
+                      borderRadius: 8,
+                      display: "block",
+                      margin: "0 auto",
+                    }
+                  : { width: "100%", borderRadius: 8 }
+              }
             />
           )}
         </Flex>

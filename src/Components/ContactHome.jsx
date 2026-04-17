@@ -9,6 +9,7 @@ import {
   Input,
   Layout,
   List,
+  message,
   Row,
   Space,
   Tag,
@@ -21,6 +22,7 @@ import {
 } from "@ant-design/icons";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import axiosInstance from "../Utils/axiosInstance";
 
 const { Content } = Layout;
 const { Title, Paragraph, Text } = Typography;
@@ -45,8 +47,17 @@ const officeImage =
   "https://lh3.googleusercontent.com/aida-public/AB6AXuD9xduHAYOZ1Q-cQOIWUR5hB4MynafUewNaOH0gNTvx8sI2b_CRPcVMZwtiRwATTAk2NxlSQ9SFrICs1GX7B9IBxNxDZGRA6IUY3DIqE4lPdbzLwybxy0ckyLewcXw9Y6NtZPibuB3ZttvtCDnrJy6zTtbcZcv_VucrxXibZ5sZg900mNEkNuAu82uiG-HqX0RDKMNxD03b4lLjFtga6IqZPPnISWafI0Jxwp8mHi3704kACbTrZ-jaBjP1lHLIM7FjTxHTpT2YC1hd";
 
 const ContactHome = () => {
-  const handleSubmit = (values) => {
+  const [form] = Form.useForm();
+
+  const handleSubmit = async (values) => {
     console.log("Contact Home Submission:", values);
+    try {
+      await axiosInstance.post("/contact", values);
+      message.success("Message sent successfully!");
+      form.resetFields();
+    } catch (error) {
+      message.error("Failed to send message. Please try again later.");
+    }
   };
 
   return (
@@ -103,6 +114,7 @@ const ContactHome = () => {
                             background: "#111827",
                             color: "#ffffff",
                             borderRadius: 8,
+                            marginTop: -40,
                           },
                         }}
                       >
@@ -117,25 +129,6 @@ const ContactHome = () => {
                         </Text>
                       </Card>
                     </Card>
-
-                    <List
-                      itemLayout="horizontal"
-                      dataSource={contactDetails}
-                      renderItem={(item) => (
-                        <List.Item>
-                          <List.Item.Meta
-                            avatar={<Avatar shape="square" icon={item.icon} />}
-                            title={item.label}
-                            description={
-                              <Space direction="vertical" size={0}>
-                                <Text strong>{item.value}</Text>
-                                <Text type="secondary">{item.hint}</Text>
-                              </Space>
-                            }
-                          />
-                        </List.Item>
-                      )}
-                    />
                   </Space>
                 </Col>
 
@@ -151,6 +144,7 @@ const ContactHome = () => {
                   >
                     <Form
                       layout="vertical"
+                      form={form}
                       onFinish={handleSubmit}
                       requiredMark={false}
                     >
@@ -225,8 +219,46 @@ const ContactHome = () => {
                       </Space>
                     </Form>
                   </Card>
+                  <Card style={{ marginTop: 24 }}>
+                    <List
+                      itemLayout="horizontal"
+                      dataSource={contactDetails}
+                      renderItem={(item) => (
+                        <List.Item>
+                          <List.Item.Meta
+                            avatar={<Avatar shape="square" icon={item.icon} />}
+                            title={item.label}
+                            description={
+                              <Space direction="vertical" size={0}>
+                                <Text strong>{item.value}</Text>
+                                <Text type="secondary">{item.hint}</Text>
+                              </Space>
+                            }
+                          />
+                        </List.Item>
+                      )}
+                    />
+                  </Card>
                 </Col>
               </Row>
+
+              <Card
+                bordered={false}
+                title="Our Location"
+                styles={{ body: { padding: 0 } }}
+                style={{ overflow: "hidden" }}
+              >
+                <iframe
+                  title="Blogify location"
+                  width="100%"
+                  height="380"
+                  style={{ border: 0, display: "block" }}
+                  loading="lazy"
+                  allowFullScreen
+                  referrerPolicy="no-referrer-when-downgrade"
+                  src="https://www.google.com/maps?q=Ahmedabad,Gujarat,India&output=embed"
+                />
+              </Card>
             </Space>
           </Col>
         </Row>

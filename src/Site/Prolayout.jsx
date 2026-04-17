@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import {
+  BookOutlined,
   DashboardOutlined,
   InfoCircleOutlined,
   MailOutlined,
@@ -18,18 +19,18 @@ const items = [
     label: <Link to="/dashboard">Dashboard</Link>,
   },
   {
-    key: "about",
+    key: "dashboard-about",
     icon: <InfoCircleOutlined />,
-    label: <Link to="/about">About</Link>,
+    label: <Link to="/dashboard/about">About</Link>,
   },
   {
-    key: "contact",
+    key: "dashboard-contact",
     icon: <MailOutlined />,
-    label: <Link to="/contact">Contact</Link>,
+    label: <Link to="/dashboard/contact">Contact</Link>,
   },
   {
     key: "blog",
-    icon: <MailOutlined />,
+    icon: <BookOutlined />,
     label: <Link to="/blog">Blog</Link>,
   },
 ];
@@ -39,20 +40,25 @@ const ProLayout = () => {
   const location = useLocation();
   const {
     token: { colorBgContainer, borderRadiusLG },
-    
   } = theme.useToken();
 
   const getSelectedKey = () => {
     const path = location.pathname.substring(1);
-    return path || "dashboard";
+    if (path === "dashboard" || path === "") return "dashboard";
+    if (path === "dashboard/about") return "dashboard-about";
+    if (path === "dashboard/contact") return "dashboard-contact";
+    if (path === "blog") return "blog";
+    return "dashboard";
   };
 
   const getHeaderTitle = () => {
     if (location.pathname === "/" || location.pathname === "/dashboard") {
       return "Dashboard";
     }
-    const path = location.pathname.substring(1);
-    return path.charAt(0).toUpperCase() + path.slice(1);
+    if (location.pathname === "/dashboard/about") return "About";
+    if (location.pathname === "/dashboard/contact") return "Contact";
+    if (location.pathname === "/blog") return "Blog";
+    return "Dashboard";
   };
 
   return (
@@ -60,22 +66,34 @@ const ProLayout = () => {
       theme={{
         components: {
           Layout: {
-            bodyBg: "#f0f2f5",
-            headerBg: colorBgContainer,
+            bodyBg: "#f4f7ff",
+            headerBg: "rgba(255,255,255,0.82)",
             headerHeight: 64,
-            siderBg: "#001529",
+            siderBg: "#0f172a",
+          },
+          Menu: {
+            darkItemBg: "transparent",
+            darkItemColor: "#cbd5e1",
+            darkItemHoverColor: "#ffffff",
+            darkItemSelectedColor: "#ffffff",
+            darkItemSelectedBg: "linear-gradient(135deg, #2563eb, #4f46e5)",
+            itemBorderRadius: 10,
+            itemMarginInline: 10,
+            itemMarginBlock: 8,
+            itemHeight: 42,
           },
         },
       }}
-    >  
-    
+    >
       <Layout
         style={{
           minHeight: "100vh",
           width: "100vw",
           maxWidth: "100%",
-          overflow: "hidden",
+          overflow: "clip",
           position: "relative",
+          background:
+            "radial-gradient(1200px 400px at 20% -10%, #dbeafe 0%, transparent 55%), #f4f7ff",
         }}
       >
         <Sider
@@ -93,7 +111,10 @@ const ProLayout = () => {
             bottom: 0,
             overflow: "auto",
             zIndex: 100,
-            boxShadow: "2px 0 8px rgba(0,0,0,0.15)",
+            boxShadow: "8px 0 32px rgba(15,23,42,0.22)",
+            borderRight: "1px solid rgba(148,163,184,0.16)",
+            background:
+              "linear-gradient(180deg, #0f172a 0%, #111827 48%, #1e293b 100%)",
           }}
           theme="dark"
         >
@@ -105,11 +126,12 @@ const ProLayout = () => {
               display: "flex",
               alignItems: "center",
               justifyContent: collapsed ? "center" : "flex-start",
-              background: "#002140",
+              background: "transparent",
               color: "#fff",
               fontSize: collapsed ? 16 : 18,
               fontWeight: "bold",
-              borderBottom: "1px solid rgba(255,255,255,0.1)",
+              borderBottom: "1px solid rgba(148,163,184,0.15)",
+              letterSpacing: 0.3,
             }}
           >
             {collapsed ? "B" : "Blogify"}
@@ -124,6 +146,8 @@ const ProLayout = () => {
               height: "calc(100% - 64px)",
               overflowY: "auto",
               overflowX: "hidden",
+              background: "transparent",
+              paddingTop: 8,
             }}
           />
         </Sider>
@@ -132,21 +156,23 @@ const ProLayout = () => {
             marginLeft: collapsed ? 80 : 200,
             minHeight: "100vh",
             width: collapsed ? "calc(100% - 80px)" : "calc(100% - 200px)",
-            transition: "all 0.2s",
-            background: "#f0f2f5",
+            transition: "all 0.22s ease",
+            background: "transparent",
           }}
         >
           <Header
             style={{
-              padding: 0,
-              background: colorBgContainer,
+              padding: "0 12px 0 0",
+              background: "rgba(255,255,255,0.78)",
+              backdropFilter: "blur(10px)",
               position: "sticky",
               top: 0,
               zIndex: 99,
               width: "100%",
               display: "flex",
               alignItems: "center",
-              boxShadow: "0 1px 4px rgba(0,0,0,0.08)",
+              borderBottom: "1px solid rgba(148,163,184,0.22)",
+              boxShadow: "0 8px 24px rgba(15,23,42,0.06)",
               height: 64,
               lineHeight: "64px",
             }}
@@ -162,15 +188,17 @@ const ProLayout = () => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
+                borderRadius: 10,
               }}
             />
             <h2
               style={{
                 margin: 0,
                 marginLeft: 16,
-                fontSize: 20,
-                fontWeight: 500,
-                color: "rgba(0,0,0,0.85)",
+                fontSize: 19,
+                fontWeight: 700,
+                color: "#0f172a",
+                letterSpacing: 0.2,
               }}
             >
               {getHeaderTitle()}
@@ -178,7 +206,7 @@ const ProLayout = () => {
           </Header>
           <Content
             style={{
-              margin: "24px 16px",
+              margin: "18px 14px 14px",
               padding: 0,
               flex: 1,
               display: "flex",
@@ -187,13 +215,14 @@ const ProLayout = () => {
           >
             <div
               style={{
-                padding: 24,
+                padding: 18,
                 flex: 1,
-                background: colorBgContainer,
-                borderRadius: borderRadiusLG,
+                background: "rgba(255,255,255,0.88)",
+                borderRadius: 18,
                 width: "100%",
                 height: "100%",
-                boxShadow: "0 1px 2px rgba(0,0,0,0.03)",
+                border: "1px solid rgba(148,163,184,0.18)",
+                boxShadow: "0 12px 32px rgba(15,23,42,0.08)",
                 overflowY: "auto",
               }}
             >
@@ -204,13 +233,13 @@ const ProLayout = () => {
             style={{
               textAlign: "center",
               padding: "12px 24px",
-              background: "#f0f2f5",
-              color: "rgba(0,0,0,0.45)",
-              fontSize: 14,
-              borderTop: "1px solid rgba(0,0,0,0.06)",
+              background: "transparent",
+              color: "#64748b",
+              fontSize: 13,
+              borderTop: "1px solid rgba(148,163,184,0.2)",
             }}
           >
-            Ant Design ©{new Date().getFullYear()} Created by Ant UED
+            Blogify Admin ©{new Date().getFullYear()}
           </Footer>
         </Layout>
       </Layout>

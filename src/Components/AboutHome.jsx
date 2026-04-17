@@ -17,6 +17,7 @@ import {
   TeamOutlined,
   UsergroupAddOutlined,
 } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 
@@ -54,6 +55,8 @@ const stats = [
 ];
 
 const AboutHome = () => {
+  const navigate = useNavigate();
+
   return (
     <Layout>
       <Navbar activeKey="about" showAuthButtons />
@@ -282,7 +285,12 @@ const AboutHome = () => {
                     Join thousands of creators who have found their home on
                     Blogify. Start your creative journey today.
                   </Paragraph>
-                  <Button type="primary" size="large" style={{ minWidth: 160 }}>
+                  <Button
+                    type="primary"
+                    size="large"
+                    style={{ minWidth: 160 }}
+                    onClick={() => navigate("/login?redirect=/blog")}
+                  >
                     Start Your Journey
                   </Button>
                 </Space>
