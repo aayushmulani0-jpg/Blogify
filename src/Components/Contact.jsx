@@ -10,6 +10,7 @@ import {
   Space,
   Divider,
   message,
+  message,
 } from "antd";
 import {
   MailOutlined,
@@ -55,7 +56,7 @@ const Contact = () => {
                 <div>
                   <Text strong>Phone</Text>
                   <br />
-                  <Text type="secondary">+91 98765 43210</Text>
+                  <Text type="secondary">+91 6359717897</Text>
                 </div>
               </Space>
             </Card>
@@ -66,18 +67,7 @@ const Contact = () => {
                 <div>
                   <Text strong>Email</Text>
                   <br />
-                  <Text type="secondary">support@company.com</Text>
-                </div>
-              </Space>
-            </Card>
-
-            <Card bordered>
-              <Space align="center">
-                <EnvironmentOutlined style={{ fontSize: 20 }} />
-                <div>
-                  <Text strong>Office</Text>
-                  <br />
-                  <Text type="secondary">Ahmedabad, Gujarat, India</Text>
+                  <Text type="secondary">parthkoshti3183@gmail.com</Text>
                 </div>
               </Space>
             </Card>
@@ -120,6 +110,14 @@ const Contact = () => {
                   </Form.Item>
                 </Col>
               </Row>
+
+              {/* <Form.Item
+                label="Subject"
+                name="subject"
+                rules={[{ required: true, message: "Please enter subject" }]}
+              >
+                <Input placeholder="Subject" />
+              </Form.Item> */}
 
               <Form.Item
                 label="Message"
