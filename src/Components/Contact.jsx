@@ -9,6 +9,7 @@ import {
   Button,
   Space,
   Divider,
+  message,
 } from "antd";
 import {
   MailOutlined,
@@ -16,6 +17,7 @@ import {
   EnvironmentOutlined,
   SendOutlined,
 } from "@ant-design/icons";
+import axiosInstance from "../utils/axiosInstance";
 
 const { Title, Text } = Typography;
 const { TextArea } = Input;
@@ -23,8 +25,14 @@ const { TextArea } = Input;
 const Contact = () => {
   const [form] = Form.useForm();
 
-  const onFinish = (values) => {
-    console.log("Contact Form Data:", values);
+  const onFinish = async (values) => {
+    try {
+      await axiosInstance.post("/contact", values);
+      message.success("Message sent successfully!");
+      form.resetFields();
+    } catch (error) {
+      message.error("Failed to send message. Please try again later.");
+    }
   };
 
   return (
@@ -46,7 +54,7 @@ const Contact = () => {
                 <div>
                   <Text strong>Phone</Text>
                   <br />
-                  <Text type="secondary">+91 98765 43210</Text>
+                  <Text type="secondary">+91 6359717897</Text>
                 </div>
               </Space>
             </Card>
@@ -57,18 +65,7 @@ const Contact = () => {
                 <div>
                   <Text strong>Email</Text>
                   <br />
-                  <Text type="secondary">support@company.com</Text>
-                </div>
-              </Space>
-            </Card>
-
-            <Card bordered>
-              <Space align="center">
-                <EnvironmentOutlined style={{ fontSize: 20 }} />
-                <div>
-                  <Text strong>Office</Text>
-                  <br />
-                  <Text type="secondary">Ahmedabad, Gujarat, India</Text>
+                  <Text type="secondary">parthkoshti3183@gmail.com</Text>
                 </div>
               </Space>
             </Card>
@@ -112,13 +109,13 @@ const Contact = () => {
                 </Col>
               </Row>
 
-              <Form.Item
+              {/* <Form.Item
                 label="Subject"
                 name="subject"
                 rules={[{ required: true, message: "Please enter subject" }]}
               >
                 <Input placeholder="Subject" />
-              </Form.Item>
+              </Form.Item> */}
 
               <Form.Item
                 label="Message"
