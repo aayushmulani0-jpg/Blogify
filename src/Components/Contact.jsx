@@ -10,12 +10,10 @@ import {
   Space,
   Divider,
   message,
-  message,
 } from "antd";
 import {
   MailOutlined,
   PhoneOutlined,
-  EnvironmentOutlined,
   SendOutlined,
 } from "@ant-design/icons";
 import axiosInstance from "../Utils/axiosInstance";
@@ -110,14 +108,6 @@ const Contact = () => {
                   </Form.Item>
                 </Col>
               </Row>
-
-              {/* <Form.Item
-                label="Subject"
-                name="subject"
-                rules={[{ required: true, message: "Please enter subject" }]}
-              >
-                <Input placeholder="Subject" />
-              </Form.Item> */}
 
               <Form.Item
                 label="Message"
