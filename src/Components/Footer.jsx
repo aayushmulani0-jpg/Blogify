@@ -1,0 +1,118 @@
+import React from "react";
+import { Avatar, Col, Divider, Grid, Row, Space, Typography } from "antd";
+import {
+  InstagramOutlined,
+  LinkedinOutlined,
+  TwitterOutlined,
+  YoutubeOutlined,
+} from "@ant-design/icons";
+
+const { Text, Paragraph } = Typography;
+const { useBreakpoint } = Grid;
+
+const Footer = ({
+  description = "A clean space for writers and thinkers to share meaningful ideas with the world.",
+}) => {
+  const screens = useBreakpoint();
+
+  return (
+    <footer
+      style={{
+        background: "#020617",
+        color: "#94a3b8",
+        padding: screens.lg ? "72px 48px 32px" : "56px 18px 24px",
+      }}
+    >
+      <div style={{ maxWidth: 1240, margin: "0 auto" }}>
+        <Row gutter={[24, 32]}>
+          <Col xs={24} md={10}>
+            <Space align="center" size={12} style={{ marginBottom: 16 }}>
+              <Avatar
+                shape="square"
+                size={42}
+                style={{
+                  borderRadius: 11,
+                  background:
+                    "linear-gradient(135deg, #2563eb, #4f46e5, #7c3aed)",
+                  fontSize: 20,
+                  fontWeight: 800,
+                }}
+              >
+                B
+              </Avatar>
+              <Text style={{ color: "#ffffff", fontSize: 36, fontWeight: 700 }}>
+                Blogify
+              </Text>
+            </Space>
+            <Paragraph
+              style={{ color: "#94a3b8", maxWidth: 420, marginBottom: 0 }}
+            >
+              {description}
+            </Paragraph>
+          </Col>
+          <Col xs={12} md={4}>
+            <Text
+              style={{
+                color: "#ffffff",
+                fontWeight: 700,
+                display: "block",
+                marginBottom: 14,
+              }}
+            >
+              Platform
+            </Text>
+            <Space direction="vertical" size={8}>
+              <Text style={{ color: "#94a3b8" }}>Browse Blogs</Text>
+              <Text style={{ color: "#94a3b8" }}>Write a Post</Text>
+              <Text style={{ color: "#94a3b8" }}>Categories</Text>
+            </Space>
+          </Col>
+          <Col xs={12} md={4}>
+            <Text
+              style={{
+                color: "#ffffff",
+                fontWeight: 700,
+                display: "block",
+                marginBottom: 14,
+              }}
+            >
+              Company
+            </Text>
+            <Space direction="vertical" size={8}>
+              <Text style={{ color: "#94a3b8" }}>About Us</Text>
+              <Text style={{ color: "#94a3b8" }}>Contact</Text>
+              <Text style={{ color: "#94a3b8" }}>Blogify for Teams</Text>
+            </Space>
+          </Col>
+          <Col xs={24} md={6}>
+            <Text
+              style={{
+                color: "#ffffff",
+                fontWeight: 700,
+                display: "block",
+                marginBottom: 14,
+              }}
+            >
+              Follow Us
+            </Text>
+            <Space size={20}>
+              <YoutubeOutlined style={{ fontSize: 24, color: "#e2e8f0" }} />
+              <InstagramOutlined style={{ fontSize: 24, color: "#e2e8f0" }} />
+              <LinkedinOutlined style={{ fontSize: 24, color: "#e2e8f0" }} />
+              <TwitterOutlined style={{ fontSize: 24, color: "#e2e8f0" }} />
+            </Space>
+          </Col>
+        </Row>
+
+        <Divider style={{ borderColor: "#334155", margin: "34px 0 18px" }} />
+        <Text
+          style={{ color: "#94a3b8", display: "block", textAlign: "center" }}
+        >
+          {`© ${new Date().getFullYear()} Blogify • by Parthkoshti. All rights reserved.`}
+        </Text>
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;
