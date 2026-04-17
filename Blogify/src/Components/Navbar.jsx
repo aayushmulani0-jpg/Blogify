@@ -40,7 +40,13 @@ const Navbar = ({
       <Row justify="space-between" align="middle" wrap={false}>
         <Col>
           <Link to="/home">
-            <Text style={{ fontSize: 28, fontWeight: 800, color: "#0f172a" }}>
+            <Text
+              style={{
+                fontSize: 28,
+                fontWeight: 800,
+                color: "#0f172a",
+              }}
+            >
               Blogify
             </Text>
           </Link>
@@ -90,7 +96,11 @@ const Navbar = ({
         {showAuthButtons && (
           <Col>
             <Space>
-              {screens.md && <Button type="text">Log in</Button>}
+              {screens.md && (
+                <Button type="text" style={{ color: undefined }}>
+                  Log in
+                </Button>
+              )}
               <Button
                 type="primary"
                 size="large"
