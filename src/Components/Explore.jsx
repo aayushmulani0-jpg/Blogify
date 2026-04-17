@@ -1,13 +1,9 @@
-
-
 import React, { useEffect, useState } from "react";
 import {
-  Avatar,
   Button,
   Card,
   Col,
   ConfigProvider,
-  Divider,
   Flex,
   Layout,
   Pagination,
@@ -17,6 +13,7 @@ import {
   Typography,
 } from "antd";
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import axiosInstance from "../utils/axiosInstance";
@@ -26,16 +23,29 @@ const filters = ["All Posts", "Design", "Technology", "Business", "Culture"];
 
 
 const Explore = () => {
+  const navigate = useNavigate();
   const [blogs, setBlogs] = useState([]);
   console.log("Blogs state updated:", blogs);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(9);
   const [total, setTotal] = useState(0);
+
+  const getWordCount = (text = "") =>
+    text.trim().split(/\s+/).filter(Boolean).length;
+
+  const getExcerpt = (text = "", limit = 30) => {
+    const words = text.trim().split(/\s+/).filter(Boolean);
+    if (words.length <= limit) {
+      return text;
+    }
+    return `${words.slice(0, limit).join(" ")}...`;
+  };
+
   const exploreBlogs = async () => {
     const payload = {
       limit: pageSize,
       page: page,
-    }
+    };
     try {
       const res = await axiosInstance.post("/getAllUsersBlog", payload);
       console.log("Blogs fetched successfully:", res.data);
@@ -44,12 +54,12 @@ const Explore = () => {
     } catch (error) {
       console.error("Error fetching blogs:", error);
     }
-  }
+  };
 
   useEffect(() => {
     setBlogs([]); // Clear blogs before fetching new ones
     exploreBlogs();
-  }, [page, pageSize])
+  }, [page, pageSize]);
 
   return (
     <ConfigProvider
@@ -219,8 +229,33 @@ const Explore = () => {
                           fontSize: 14,
                         }}
                       >
-                        {blog?.content}
+                        {getExcerpt(blog?.content, 30)}
                       </Typography.Paragraph>
+
+                      {getWordCount(blog?.content) > 30 && (
+                        <Button
+                          type="primary"
+                          style={{
+                            width: "fit-content",
+                            background: "#4f46e5",
+                            borderColor: "#4f46e5",
+                          }}
+                          onClick={() =>
+                            navigate(
+                              `/explore/${
+                                blog?._id ||
+                                String(blog?.title || "blog")
+                                  .toLowerCase()
+                                  .trim()
+                                  .replace(/\s+/g, "-")
+                              }`,
+                              { state: { blog } },
+                            )
+                          }
+                        >
+                          Read more
+                        </Button>
+                      )}
 
                       {/* <Divider style={{ margin: "8px 0 0" }} /> */}
 
@@ -255,7 +290,6 @@ const Explore = () => {
             </Row>
 
             <Flex justify="center" style={{ marginTop: 48 }}>
-
               <Pagination
                 current={page}
                 total={total}

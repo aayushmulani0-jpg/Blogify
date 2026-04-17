@@ -6,6 +6,7 @@ import {
   TwitterOutlined,
   YoutubeOutlined,
 } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 
 const { Text, Paragraph } = Typography;
 const { useBreakpoint } = Grid;
@@ -27,22 +28,28 @@ const Footer = ({
         <Row gutter={[24, 32]}>
           <Col xs={24} md={10}>
             <Space align="center" size={12} style={{ marginBottom: 16 }}>
-              <Avatar
-                shape="square"
-                size={42}
-                style={{
-                  borderRadius: 11,
-                  background:
-                    "linear-gradient(135deg, #2563eb, #4f46e5, #7c3aed)",
-                  fontSize: 20,
-                  fontWeight: 800,
-                }}
-              >
-                B
-              </Avatar>
-              <Text style={{ color: "#ffffff", fontSize: 36, fontWeight: 700 }}>
-                Blogify
-              </Text>
+              <Link to="/home" style={{ textDecoration: "none" }}>
+                <Space align="center" size={12}>
+                  <Avatar
+                    shape="square"
+                    size={42}
+                    style={{
+                      borderRadius: 11,
+                      background:
+                        "linear-gradient(135deg, #2563eb, #4f46e5, #7c3aed)",
+                      fontSize: 20,
+                      fontWeight: 800,
+                    }}
+                  >
+                    B
+                  </Avatar>
+                  <Text
+                    style={{ color: "#ffffff", fontSize: 36, fontWeight: 700 }}
+                  >
+                    Blogify
+                  </Text>
+                </Space>
+              </Link>
             </Space>
             <Paragraph
               style={{ color: "#94a3b8", maxWidth: 420, marginBottom: 0 }}
@@ -62,9 +69,18 @@ const Footer = ({
               Platform
             </Text>
             <Space direction="vertical" size={8}>
-              <Text style={{ color: "#94a3b8" }}>Browse Blogs</Text>
-              <Text style={{ color: "#94a3b8" }}>Write a Post</Text>
-              <Text style={{ color: "#94a3b8" }}>Categories</Text>
+              <Link to="/explore" style={{ textDecoration: "none" }}>
+                <Text style={{ color: "#94a3b8" }}>Browse Blogs</Text>
+              </Link>
+              <Link
+                to="/login?redirect=/blog"
+                style={{ textDecoration: "none" }}
+              >
+                <Text style={{ color: "#94a3b8" }}>Write a Post</Text>
+              </Link>
+              <Link to="/explore" style={{ textDecoration: "none" }}>
+                <Text style={{ color: "#94a3b8" }}>Categories</Text>
+              </Link>
             </Space>
           </Col>
           <Col xs={12} md={4}>
@@ -79,9 +95,15 @@ const Footer = ({
               Company
             </Text>
             <Space direction="vertical" size={8}>
-              <Text style={{ color: "#94a3b8" }}>About Us</Text>
-              <Text style={{ color: "#94a3b8" }}>Contact</Text>
-              <Text style={{ color: "#94a3b8" }}>Blogify for Teams</Text>
+              <Link to="/about" style={{ textDecoration: "none" }}>
+                <Text style={{ color: "#94a3b8" }}>About Us</Text>
+              </Link>
+              <Link to="/contact" style={{ textDecoration: "none" }}>
+                <Text style={{ color: "#94a3b8" }}>Contact</Text>
+              </Link>
+              <Link to="/home" style={{ textDecoration: "none" }}>
+                <Text style={{ color: "#94a3b8" }}>Blogify for Teams</Text>
+              </Link>
             </Space>
           </Col>
           <Col xs={24} md={6}>
@@ -96,10 +118,28 @@ const Footer = ({
               Follow Us
             </Text>
             <Space size={20}>
-              <YoutubeOutlined style={{ fontSize: 24, color: "#e2e8f0" }} />
-              <InstagramOutlined style={{ fontSize: 24, color: "#e2e8f0" }} />
-              <LinkedinOutlined style={{ fontSize: 24, color: "#e2e8f0" }} />
-              <TwitterOutlined style={{ fontSize: 24, color: "#e2e8f0" }} />
+              <a
+                href="https://youtube.com/@parthkoshti3183"
+                aria-label="Youtube"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <YoutubeOutlined style={{ fontSize: 24, color: "#e2e8f0" }} />
+              </a>
+              <a
+                href="https://www.instagram.com/parth.3183"
+                aria-label="Instagram"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <InstagramOutlined style={{ fontSize: 24, color: "#e2e8f0" }} />
+              </a>
+              <Link to="/about" aria-label="LinkedIn">
+                <LinkedinOutlined style={{ fontSize: 24, color: "#e2e8f0" }} />
+              </Link>
+              <Link to="/contact" aria-label="Twitter">
+                <TwitterOutlined style={{ fontSize: 24, color: "#e2e8f0" }} />
+              </Link>
             </Space>
           </Col>
         </Row>

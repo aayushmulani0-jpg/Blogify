@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -19,7 +18,7 @@ import {
 } from "antd";
 import { MoonOutlined, SunOutlined } from "@ant-design/icons";
 import axiosInstance from "../Utils/axiosInstance.jsx";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getMediaPath } from "../Utils/getMediaPath.jsx";
 import { setUserDetails } from "../Redux/reducer.user.jsx";
 // import { setTheme } from "../../redux/reducers/reducer.app.jsx";
@@ -29,6 +28,7 @@ const { Text } = Typography;
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const app = useSelector((state) => state?.app);
   const theme = useSelector((state) => state?.app?.theme);
@@ -46,12 +46,16 @@ const Login = () => {
         email: email,
         password: password,
       });
-    console.log("Login response: ", data);
+      console.log("Login response: ", data);
       if (data.status) {
         message.success("Login Successfully");
-        dispatch(setUserDetails(data)); 
-        navigate("/dashboard");
-        console.log("Login successful, navigating to dashboard");
+        dispatch(setUserDetails(data));
+        const redirectTo = new URLSearchParams(location.search).get("redirect");
+        navigate(redirectTo || "/dashboard");
+        console.log(
+          "Login successful, navigating to",
+          redirectTo || "/dashboard",
+        );
       } else {
         message.error(data.message);
       }
@@ -64,7 +68,7 @@ const Login = () => {
 
   // // 🌙 Theme toggle
   // const toggleTheme = () => {
-  //   dispatch(setTheme(!theme)); 
+  //   dispatch(setTheme(!theme));
   // };
 
   return (
@@ -73,7 +77,7 @@ const Login = () => {
         height: "100vh",
         width: "100vw",
         backgroundImage: `url(${getMediaPath(
-          "/media/background/login-bg.svg"
+          "/media/background/login-bg.svg",
         )})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
@@ -91,16 +95,14 @@ const Login = () => {
             {theme ? (
               <Avatar
                 style={{
-                  backgroundColor:
-                    antdTheme.useToken().token.colorPrimary,
+                  backgroundColor: antdTheme.useToken().token.colorPrimary,
                 }}
                 icon={<MoonOutlined onClick={toggleTheme} />}
               />
             ) : (
               <Avatar
                 style={{
-                  backgroundColor:
-                    antdTheme.useToken().token.colorPrimary,
+                  backgroundColor: antdTheme.useToken().token.colorPrimary,
                 }}
                 // icon={<SunOutlined onClick={toggleTheme} />}
               />
@@ -113,11 +115,7 @@ const Login = () => {
       <Flex align="middle" justify="center" style={{ margin: "auto" }}>
         <Row>
           <Col xs={24} sm={24} md={12} xl={10}>
-            <Form
-              onFinish={onLogin}
-              layout="vertical"
-              style={{ width: 380 }}
-            >
+            <Form onFinish={onLogin} layout="vertical" style={{ width: 380 }}>
               <Card>
                 {/* Logo */}
                 <Flex justify="center">
@@ -153,9 +151,7 @@ const Login = () => {
                 <Form.Item
                   label="Password"
                   name="password"
-                  rules={[
-                    { required: true, message: "Please enter password" },
-                  ]}
+                  rules={[{ required: true, message: "Please enter password" }]}
                 >
                   <Input.Password
                     placeholder="Enter password"
